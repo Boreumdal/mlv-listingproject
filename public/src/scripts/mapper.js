@@ -1,5 +1,19 @@
 function initializeMap() {
     // get current position for default
+    function pos(){
+        if (document.querySelector('#lat').value == '' || document.querySelector('#lat').value == 'undefined' || document.querySelector('#lng').value == '' || document.querySelector('#lng').value == 'undefined'){
+            document.querySelector('#sub').disabled = true
+            document.querySelector('#sub').style.cursor = 'not-allowed'
+            document.querySelector('#curpos').style.color = '#e74c3c'
+            document.querySelector('#curpos').innerText = 'Pick/Redrag the pin •'
+        }
+        else {
+            document.querySelector('#sub').disabled = false
+            document.querySelector('#sub').style.cursor = 'pointer'
+            document.querySelector('#curpos').style.color = '#2ed573'
+            document.querySelector('#curpos').innerText = 'Ready to submit •'
+        }
+    }
     function current(){
         // local browser navigator support checker
         if (navigator.geolocation){
@@ -36,6 +50,7 @@ function initializeMap() {
             
             pointedMarker.draggable = true
             map.addObject(pointedMarker)
+            pos()
         }
 
         function dragger(map, behavior){
@@ -47,6 +62,7 @@ function initializeMap() {
                   target['offset'] = new H.math.Point(pointer.viewportX - targetPosition.x, pointer.viewportY - targetPosition.y);
                   behavior.disable();
                 }
+                pos()
             }, false);
             
             map.addEventListener('dragend', function(ev) {
@@ -54,6 +70,7 @@ function initializeMap() {
                 if (target instanceof H.map.Marker) {
                   behavior.enable();
                 }
+                pos()
             }, false);
             
             map.addEventListener('drag', function(ev) {
@@ -63,24 +80,27 @@ function initializeMap() {
                   target.setGeometry(map.screenToGeo(pointer.viewportX - target['offset'].x, pointer.viewportY - target['offset'].y));
                 }
                 sendToInput(target.a.lat, target.a.lng)
+                pos()
             }, false);
         }
 
         function sendToInput(lat, lng){
             let valueLat = {
                 value: lat,
-                placeholder: lat
+                placeholder: lat // for debugging purpose
             }
             let valueLng = {
                 value: lng,
-                placeholder: lng
+                placeholder: lng // for debugging purpose
             }
+            // for debugging purpose
             for (let attr in valueLat){
                 document.querySelector('#lat').setAttribute(attr, valueLat[attr])
             }
             for (let attr in valueLng){
                 document.querySelector('#lng').setAttribute(attr, valueLng[attr])
             }
+            pos()
         }
         // hero connection
         var platform = await new H.service.Platform({
@@ -101,11 +121,8 @@ function initializeMap() {
         
         fireClick(map)
         dragger(map, behavior)
-
-        return map
     }
-    
-
-    return current()
+    pos()
+    current()
 }
 document.onload = initializeMap()

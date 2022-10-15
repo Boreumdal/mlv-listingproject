@@ -118,11 +118,7 @@ app.post('/login', passport.authenticate('local', {
 // create
 // uses /place future update proofing
 app.get('/create', inLogged, (req, res) => {
-    const initials = {
-        f: req.user.firstname[0],
-        l: req.user.lastname[0]
-    }
-    res.render('create', { user: req.user, initials})
+    res.render('create', { user: req.user })
 })
 
 app.post('/create', inLogged, (req, res) => {

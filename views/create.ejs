@@ -47,7 +47,9 @@
                             <textarea name="description" id="description" cols="30" rows="8" placeholder="Enter place description"></textarea>
                         </div>
                         <div class="input-control">
-                            <label class="map-addr" for="">Address: <span id="curpos"></span></label>
+                            <label class="map-addr" for="">Address:
+                                <span id="curpos" style="color: rgb(69, 254, 69); ">•</span>
+                            </label>
                             <div id="map"></div>
                         </div>
                         <div class="invi-input">
@@ -57,7 +59,7 @@
                             <input type="text" name="authorLast" id="authorLast" value="<%= user.lastname %>">
                         </div>
                         <div class="input-control">
-                            <button type="submit" class="btn">Submit</button>
+                            <button type="submit" id="sub" class="btn">Submit</button>
                             <a class="btn danger" href="/">Cancel</a>
                         </div>
                     </div>
@@ -66,7 +68,7 @@
                         <div class="input-control">
                             <label for="">Uploader:</label>
                             <div class="place-author create">
-                                <div class="author-cap"><%= initials.f + initials.l %></div>
+                                <div class="author-cap"><%= user.firstname[0] + user.lastname[0] %></div>
                                 <h3 class="author-name"><%= `${user.firstname} ${user.lastname}` %></h3>
                             </div>
                         </div>

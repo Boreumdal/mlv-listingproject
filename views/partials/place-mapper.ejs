@@ -6,7 +6,6 @@
 
     function addPin(map){
         let marked = new H.map.Marker(currLocation)
-
         map.addObject(marked)
     }
 
@@ -20,7 +19,7 @@
     var map = new H.Map(document.getElementById('map'),
     defaultLayers.vector.normal.map,{
         center: currLocation,
-        zoom: 10
+        zoom: 15
     });
 
     window.addEventListener('resize', () => map.getViewPort().resize())

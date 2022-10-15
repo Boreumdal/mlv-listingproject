@@ -1,5 +1,21 @@
 <script>
+
     async function initializeMap(){
+        function pos(){
+            if (document.querySelector('#lat').value == '' || document.querySelector('#lat').value == 'undefined' || document.querySelector('#lng').value == '' || document.querySelector('#lng').value == 'undefined'){
+                document.querySelector('#sub').disabled = true
+                document.querySelector('#sub').style.cursor = 'not-allowed'
+                document.querySelector('#curpos').style.color = '#e74c3c'
+                document.querySelector('#curpos').innerText = 'Pick/Redrag the pin •'
+            }
+            else {
+                document.querySelector('#sub').disabled = false
+                document.querySelector('#sub').style.cursor = 'pointer'
+                document.querySelector('#curpos').style.color = '#2ed573'
+                document.querySelector('#curpos').innerText = 'Ready to submit •'
+            }
+        }
+
         // current location variable
         let latitude = '<%- place.lat %>'
         let longitude = '<%- place.lng %>'
@@ -14,6 +30,7 @@
                 target['offset'] = new H.math.Point(pointer.viewportX - targetPosition.x, pointer.viewportY - targetPosition.y);
                 behavior.disable();
                 }
+                pos()
             }, false);
         
             map.addEventListener('dragend', function(ev) {
@@ -21,6 +38,7 @@
                 if (target instanceof H.map.Marker) {
                 behavior.enable();
                 }
+                pos()
             }, false);
             
             map.addEventListener('drag', function(ev) {
@@ -30,24 +48,27 @@
                 target.setGeometry(map.screenToGeo(pointer.viewportX - target['offset'].x, pointer.viewportY - target['offset'].y));
                 }
                 sendToInput(target.a.lat, target.a.lng)
+                pos()
             }, false);
         }
 
         function sendToInput(lat, lng){
             let valueLat = {
                 value: lat,
-                placeholder: lat
+                placeholder: lat // for debugging purpose
             }
             let valueLng = {
                 value: lng,
-                placeholder: lng
+                placeholder: lng // for debugging purpose
             }
+            // for debugging purpose
             for (let attr in valueLat){
                 document.querySelector('#lat').setAttribute(attr, valueLat[attr])
             }
             for (let attr in valueLng){
                 document.querySelector('#lng').setAttribute(attr, valueLng[attr])
             }
+            pos()
         }
 
         // hero connection
@@ -71,6 +92,8 @@
         marked.draggable = true
         map.addObject(marked)
         dragger(map, behavior)
+
+        pos()
     }
 
     document.onload = initializeMap()
