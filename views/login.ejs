@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/src/styles/default.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <title>Login</title>
+</head>
+<body>
+    <nav>
+        <div class="header-text">
+            <h1>mlvn.go <span style="color: red;">•</span></h1>
+        </div>
+        <div class="header-icon">
+            <i class="fa-solid fa-code"></i>
+        </div>
+        <div class="header-nav">
+            <ul>
+                <li><a href="/" class="btn sky">Home</a></li>
+            </ul>
+        </div>
+        
+    </nav>
+     
+     <main>
+        <section class="login card">
+            <div class="login-left">
+                <form action="/login" method="post">
+                    <h2>Login your account</h2>
+                    <div class="input-control">
+                        <label for="">Username:</label>
+                        <input name="username" type="text">
+                    </div>
+                    <div class="input-control">
+                        <label for="">Password:</label>
+                        <input name="password" type="password">
+                    </div>
+                    <div class="input-control">
+                        <button type="submit" class="btn">Sign in</button><p class="inline">No account? <a class="regis" href="/register">Register here</a></p>
+                    </div>
+                </form>
+            </div>
+        </section>
+     </main>
+
+     <%- include('partials/footer.ejs') %> 
+</body>
+</html>

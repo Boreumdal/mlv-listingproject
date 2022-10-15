@@ -1,0 +1,77 @@
+<script>
+    async function initializeMap(){
+        // current location variable
+        let latitude = '<%- place.lat %>'
+        let longitude = '<%- place.lng %>'
+        let currLocation = {lat: +latitude, lng: +longitude}
+
+        function dragger(map, behavior){
+            map.addEventListener('dragstart', function(ev) {
+                var target = ev.target,
+                    pointer = ev.currentPointer;
+                if (target instanceof H.map.Marker) {
+                var targetPosition = map.geoToScreen(target.getGeometry());
+                target['offset'] = new H.math.Point(pointer.viewportX - targetPosition.x, pointer.viewportY - targetPosition.y);
+                behavior.disable();
+                }
+            }, false);
+        
+            map.addEventListener('dragend', function(ev) {
+                var target = ev.target;
+                if (target instanceof H.map.Marker) {
+                behavior.enable();
+                }
+            }, false);
+            
+            map.addEventListener('drag', function(ev) {
+                var target = ev.target,
+                    pointer = ev.currentPointer;
+                if (target instanceof H.map.Marker) {
+                target.setGeometry(map.screenToGeo(pointer.viewportX - target['offset'].x, pointer.viewportY - target['offset'].y));
+                }
+                sendToInput(target.a.lat, target.a.lng)
+            }, false);
+        }
+
+        function sendToInput(lat, lng){
+            let valueLat = {
+                value: lat,
+                placeholder: lat
+            }
+            let valueLng = {
+                value: lng,
+                placeholder: lng
+            }
+            for (let attr in valueLat){
+                document.querySelector('#lat').setAttribute(attr, valueLat[attr])
+            }
+            for (let attr in valueLng){
+                document.querySelector('#lng').setAttribute(attr, valueLng[attr])
+            }
+        }
+
+        // hero connection
+        var platform = await new H.service.Platform({
+            apikey: 'GRUNlNT4RwB49FHL2BWfRxn3vRs1-OBzH3JfW2xAHxY'
+        });
+        var defaultLayers = platform.createDefaultLayers();
+
+        var map = new H.Map(document.getElementById('map'),
+        defaultLayers.vector.normal.map,{
+            center: currLocation,
+            zoom: 10
+        });
+
+        window.addEventListener('resize', () => map.getViewPort().resize())
+        
+        var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map))
+        var ui = H.ui.UI.createDefault(map, defaultLayers)
+        
+        let marked = new H.map.Marker(currLocation)
+        marked.draggable = true
+        map.addObject(marked)
+        dragger(map, behavior)
+    }
+
+    document.onload = initializeMap()
+</script>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/src/styles/default.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <title>Profile</title>
+</head>
+<body>
+    
+    <nav>
+        <div class="header-text">
+            <h1>mlvn.go</h1>
+        </div>
+        <div class="header-icon">
+            <i class="fa-solid fa-code"></i>
+        </div>
+        <div class="header-nav">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <% if (uLogged){ %>
+                    <li><a href="/profile">Profile</a></li>
+                    <li><a class="btn" href="/create">Create Post</a></li>
+                    <li><a class="btn danger" href="/logout">Logout</a></li>
+                <% } else { %>
+                    <li><a class="btn" href="/login">Sign In</a></li>
+                <% } %>
+            </ul>
+        </div>
+    </nav>
+    
+    <main class="profile-container card">
+        <section class="profile-detail-header">
+            <div class="profile-dp">
+                <div class="profile-dp-circle">
+                    <%= userdata.firstname[0] + userdata.lastname[0] %> 
+                </div>
+            </div>
+            <div class="profile-fullname">
+                <h1><%= `${userdata.firstname} ${userdata.lastname}` %></h1>
+                <p class="profile-address">Rizal, Philippines</p>
+            </div>
+        </section>
+        <div class="line"></div>
+        <section class="profile-detail-container">
+            <div class="profile-detail">
+                <div class="profile-account-detail">
+                    <h3>Account User Details</h3>
+                    <div class="profile-detail-name">
+                        <p class="profile-detail-title">Name:</p>
+                        <p class="profile-detail-item"><%= `${userdata.firstname} ${userdata.lastname}` %></p>
+                    </div>
+                    <div class="profile-detail-addr">
+                        <p class="profile-detail-title">Address:</p>
+                        <p class="profile-detail-item">Philippines</p>
+                    </div>
+                    <div class="profile-detail-bday">
+                        <p class="profile-detail-title">Birthday:</p>
+                        <p class="profile-detail-item"><%= userdata.birthday %></p>
+                    </div>
+                    <div class="profile-detail-gender">
+                        <p class="profile-detail-title">Gender:</p>
+                        <p class="profile-detail-item"><%= gender %></p>
+                    </div>
+                </div>
+
+                <div class="profile-account-info">
+                    <h3>Account User Details</h3>
+                    <div class="profile-detail-email">
+                        <p class="profile-detail-title">Email:</p>
+                        <p class="profile-detail-item"><%= userdata.email %></p>
+                    </div>
+                    <div class="profile-detail-username">
+                        <p class="profile-detail-title">Username:</p>
+                        <p class="profile-detail-item"><%= userdata.username %></p>
+                    </div>
+                    <div class="profile-detail-password">
+                        <p class="profile-detail-title">Password:</p>
+                        <p class="profile-detail-item">••••••••••••</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="profile-action">
+            <h3>Account actions</h3>
+            <form action="">
+                <button class="btn inline sky">Change Password</button>
+                <button class="btn inline">Edit</button>
+                <button class="btn danger inline">Delete Account</button>
+                <p class="error-text inline">Not working buttons</p>
+            </form>
+        </section>
+    </main>
+
+    <%- include('partials/footer.ejs') %> 
+</body>
+</html>

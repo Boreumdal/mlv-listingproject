@@ -1,0 +1,33 @@
+<script>
+        
+    let latitude = '<%- placeObj.lat %>'
+    let longitude = '<%- placeObj.lng %>'
+    let currLocation = {lat: +latitude, lng: +longitude}
+
+    function addPin(map){
+        let marked = new H.map.Marker(currLocation)
+
+        map.addObject(marked)
+    }
+
+    // hero connection placeObj.lat placeObj.lng
+    var platform = new H.service.Platform({
+        apikey: 'GRUNlNT4RwB49FHL2BWfRxn3vRs1-OBzH3JfW2xAHxY'
+    });
+
+    var defaultLayers = platform.createDefaultLayers();
+
+    var map = new H.Map(document.getElementById('map'),
+    defaultLayers.vector.normal.map,{
+        center: currLocation,
+        zoom: 10
+    });
+
+    window.addEventListener('resize', () => map.getViewPort().resize())
+
+    var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map))
+    var ui = H.ui.UI.createDefault(map, defaultLayers)
+
+    addPin(map)
+    
+</script>

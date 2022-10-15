@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/src/styles/default.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <title>Home</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="header-text">
+                <h1>mlvn.go</h1>
+                <% if (uLogged){ %>
+                    <h1><span style="color: rgb(69, 254, 69); ">•</span></h1>
+                <% } else { %>
+                    <h1><span style="color: rgb(255, 70, 70);">•</span></h1>
+                <% } %>
+            </div>
+            <div class="header-icon">
+                
+                <% if (uLogged){ %>
+                    <span class="header-loggedin">Welcome! <%= `${userdata.firstname} ${userdata.lastname}` %></strong></span>
+                <% } else { %>
+                    <i class="fa-solid fa-code"></i>
+                <% } %> 
+            </div>
+            <div class="header-nav">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    
+                    <li><a href="#">!Contact</a></li>
+                    
+                    <% if (uLogged){ %>
+                        <li><a href="/profile">Profile</a></li>
+                        <li><a class="btn" href="/create">Create Post</a></li>
+                        <li><a class="btn danger" href="/logout">Logout</a></li>
+                    <% } else { %>
+                        <li><a class="btn" href="/login">Sign In</a></li>
+                    <% } %>
+                </ul>
+            </div>
+        </nav>
+        <div class="header-bottom">
+            <div class="header-welcome-container">
+                <h1>MLV</h1>
+                <p class="q">Traveling - it leaves you speechless, then turns you into a storyteller</p>
+                <% if (!uLogged){ %>
+                    <a href="/register" class="btn r">Register now!</a>
+                <% } %>
+            </div>
+            <div class="header-card-container">
+                
+                <div class="card card-header">
+                        <img src="/src/img/lotus.png" alt="peace" srcset="">
+                        <h2>Peace</h2>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi.</p>
+                </div>
+                <div class="card-header card">
+                        <img src="/src/img/privacy.png" alt="privacy" srcset="">
+                        <h2>Privacy</h2>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus, ipsam nisi.</p>
+                </div>
+                <div class="card card-header">
+                        <img src="/src/img/money.png" alt="money" srcset="">
+                        <h2>Save</h2>
+                        <p>Lorem ipsum dolor sit amet consectetur.</p>
+                </div>
+            </div>
+        </div>
+    </header>
+     
+    <main>
+        <section>
+            <h1>Discover...</h1>
+        </section>
+        <section class="loc-item-container">
+            <% if (places.length !== 0){ %> 
+                <% for (let place of places){ %> 
+                    <a href="/view/place/<%= place._id %>">
+                        <div class="loc-item">
+                            <div class="loc-item-img" style="background-image: url('<%= place.imageOne %>');"></div>
+                            <div class="loc-item-detail">
+                                <div class="loc-item-title">
+                                    <p>Rizal, Philippines</p>
+                                </div>
+                                <div class="loc-item-row loc-item-row-uploader">
+                                    <p><strong>Uploader:</strong> <span><%=  `${place.uploaderFirst} ${place.uploaderLast}` %></span></p>
+                                </div>
+                                <div class="loc-item-row loc-item-row-desc">
+                                    <p><strong>Description:</strong>  <span><%= place.description %></span></p>
+                                </div>
+                                <div class="loc-item-row loc-item-row-address">
+                                    <p><strong>Address:</strong> <span>Address</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                <% } %> 
+            <% } else { %> 
+                <p class="place-nothing">No listing found. Sign up and add you place to listing.</p>
+            <% } %>
+        </section>
+    </main>
+
+    <%- include('partials/footer.ejs') %> 
+</body>
+</html>

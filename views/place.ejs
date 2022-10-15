@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/src/styles/default.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
+    <title>Home</title>
+</head>
+<body>
+    <nav>
+        <div class="header-text">
+            <h1>mlvn.go</h1>
+        </div>
+        <div class="header-icon">
+            <% if (uLogged){ %>
+                <span class="header-loggedin">Welcome! <%= `${userdata.firstname} ${userdata.lastname}` %></strong></span>
+            <% } else { %>
+                <i class="fa-solid fa-code"></i>
+            <% } %> 
+        </div>
+        <div class="header-nav">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <% if (uLogged){ %>
+                    <li><a href="/profile">Profile</a></li>
+                    <li><a href="/create">Create Post</a></li>
+                    <li><a class="btn danger" href="/logout">Logout</a></li>
+                <% } else { %>
+                    <li><a class="btn" href="/login">Sign In</a></li>
+                <% } %>
+            </ul>
+        </div>
+    </nav>
+    
+     <main class="place-page">
+        <div class="place-title">
+            <h1><%= placeObj.name %></h1>
+            <div class="place-sm-desription">
+                <p><i class="fa-solid fa-house"></i></p>
+                <p>·</p>
+                <% if (placeObj.review.length !== 0){ %> 
+                    <p>
+                        <a href="#place-comment">
+                            <% if (placeObj.review.length === 1){ %>
+                                <%= placeObj.review.length %> review
+                            <% } else { %> 
+                                <%= placeObj.review.length %> reviews
+                            <% } %> 
+                        </a>
+                    </p>
+                    <p>·</p>
+                <% } %> 
+                <p class="place-tag"><%= tag%></p>
+                <p>·</p>
+                <p class="place-country">Philippines</p>
+            </div>
+        </div>
+        <div class="place-img-gallery">
+            <div class="place-img-alpha">
+                <img src="<%= placeObj.imageOne %>" alt="<%= placeObj.name %>">
+            </div>
+            <div class="place-img-bravo">
+                <img src="<%= placeObj.imageTwo %>" alt="<%= placeObj.name %>">
+                <img src="<%= placeObj.imageThree %>" alt="<%= placeObj.name %>">
+                <img src="<%= placeObj.imageFour %>" alt="<%= placeObj.name %>">
+            </div>
+        </div>
+        <div class="place-location">
+            <div class="place-location-info">
+                <p class="address-sm">Binangonan, Rizal Philippines</p>
+                <p class="address-posted"><%= placeObj.dateCreated %></p>
+            </div>
+            <div class="place-location-action">
+                <% if (uLogged){ %> 
+                    <% if (placeObj.uploaderId == userdata._id){ %> 
+                        <a class="btn" href="/view/place/<%= placeObj._id %>/edit">Edit</a>
+                    <% } %> 
+                <% } %> 
+            </div>
+        </div>
+        <div class="line"></div>
+        <div href="" class="place-author">
+            <div class="author-cap"><%= placeObj.uploaderFirst[0] + placeObj.uploaderLast[0] %></div>
+            <h3 class="author-name"><%= `${placeObj.uploaderFirst} ${placeObj.uploaderLast}` %></h3>
+        </div>
+        <div class="line"></div>
+        <div class="place-full-description">
+            <h2>About this place</h2>
+            <p><%= placeObj.description %></p>
+        </div>
+        <div class="line"></div>
+        <div id="place-comment" class="place-comment">
+            <h2>Reviews</h2>
+            <div class="place-review-container">
+                <div class="place-review">
+                    <% if (placeObj.review.length !== 0){ %> 
+                        <% for(let review of placeObj.review){ %> 
+                            <div class="place-review-item">
+                                <div class="review-item-author">
+                                    <div class="author-dp">
+                                        <div class="author-cap"><%= review.fname[0] + review.lname[0] %></div>
+                                    </div>
+                                    <div class="author-detail">
+                                        <p class="feel-author"><%= `${review.fname} ${review.lname[0]}.` %></p>
+                                        <p class="feel-date"><%= review.dateCreated %></p>
+                                    </div>
+                                </div>
+                                <div class="review-item-comment">
+                                    <p class="comment"><%= review.review %></p>
+                                </div>
+                            </div>
+                        <% } %> 
+                    <% } else { %>
+                        <p>No reviews yet</p>
+                    <% } %> 
+                </div>
+                <% if (uLogged){ %> 
+                    <form action="/view/place/<%= placeObj._id %>?_method=PATCH" method="post">
+                        <div class="input-control">
+                            <label class="comment-label" for="review">Make a comment: </label>
+                            <div class="comment-container">
+                                <div class="author-dp comment-dp">
+                                    <div class="author-cap"><%= userdata.firstname[0] + userdata.lastname[0] %></div>
+                                </div>
+                                <div class="invi-input">
+                                    <input type="text" name="reviewerf" value="<%= userdata.firstname %>">
+                                    <input type="text" name="reviewerl" value="<%= userdata.lastname %>">
+                                </div>
+                                <textarea class="comment-field" name="review" id="review" cols="30" rows="6"></textarea>
+                                <div class="comment-send">
+                                    <button type="submit" class="btn">Send</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                <% } %> 
+            </div>
+        </div>
+        <div class="line"></div>
+        <div class="place-address">
+            <h2>Our location is...</h2>
+            <address><a href="https://www.google.com/maps/@<%= placeObj.lat %>,<%= placeObj.lng%>,15z" target="_blank">Open in Google Map for directions</a></address>
+        </div>
+        <div class="place-map-box" id="map">
+            <!-- map here -->
+        </div>
+     </main>
+
+     <%- include('partials/footer.ejs') %>
+     <%- include('partials/place-mapper.ejs') %>
+     
+</body>
+</html>
