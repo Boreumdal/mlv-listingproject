@@ -5,12 +5,12 @@ const path = require('path');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const localStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcrypt')
-const methodOverride = require('method-override')
+const bcrypt = require('bcrypt');
+const methodOverride = require('method-override');
 
 // custom
 const User = require('./models/user');
-const Place = require('./models/place')
+const Place = require('./models/place');
 
 // express declaration
 const app = express();
@@ -181,7 +181,6 @@ app.post('/register', outLogged, async (req, res) => {
             })
 
 			newUser.save();
-
 			res.redirect('/login');
 		});
 	});
@@ -276,5 +275,5 @@ app.patch('/view/place/:id', inLogged, async (req, res) => {
 app.get('*', (req, res) => res.render('error'))
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, console.log(`Server Started. Listerning to port ${PORT}.`))
+app.listen(PORT, console.log(`\nServer Started. Listerning to port ${PORT}.`))
 

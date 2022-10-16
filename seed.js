@@ -3,7 +3,7 @@ const Place = require('./models/place')
 const User = require('./models/user')
 
 mongoose.connect('mongodb://localhost:27017/mlvndb')
-    .then(() => console.log('Database connected\n'))
+    .then(() => console.log('Database connected'))
     .catch(err => console.log(err))
 
 let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
@@ -210,41 +210,66 @@ const seedPost = [
     }
 ]
 
-// seed for accounts
-seedAccount.forEach(acc => {
-    let accSeeder = new User(acc)
+function seeder(){
+    console.log('\n********************************************************************\nArellano — This is seed.js.')
 
-    accSeeder.save()
-})
+    // seed for accounts
+    User.findOne({username: seedAccount[0].username}, function(err, pass){
+        if (err) return
+        if (pass){
+            console.log('\nAccounts existed');
+        }
+        if (!pass){
+            seedAccount.forEach(acc => {
+                let accSeeder = new User(acc)
 
-// seed for places
-seedPost.forEach(seed => {
-    let placeSeeder = new Place(seed)
+                accSeeder.save()
+            })
+            console.log('\nAccounts add\n ⇥ Accounts added:');
+            console.table([
+                {
+                    name: 'Melvin Arellano',
+                    username: 'admin',
+                    password: 'admin'
+                },
+                {
+                    name: 'Kazuha Nakamura',
+                    username: 'zuha',
+                    password: 'zuha'
+                },
+                {
+                    name: 'David Smith',
+                    username: 'dave',
+                    password: 'dave'
+                },
+                {
+                    name: 'Yuju Cortez',
+                    username: 'yuju',
+                    password: 'yuju'
+                },
+            ])
+        }
+    })
 
-    placeSeeder.save()
-})
+    // seed for places
+    Place.findOne({name: seedPost[0].name}, function(err, pass){
+        if (err) return
+        if (pass){
+            console.log('\nPost existed');
+        }
+        if (!pass){
+            seedPost.forEach(seed => {
+                let placeSeeder = new Place(seed)
 
-console.log('\n********************************************************************\nArellano — This is seed.js.\n\nAccounts add\n ⇥ Accounts added:')
-console.table([
-    {
-        name: 'Melvin Arellano',
-        username: 'admin',
-        password: 'admin'
-    },
-    {
-        name: 'Kazuha Nakamura',
-        username: 'zuha',
-        password: 'zuha'
-    },
-    {
-        name: 'David Smith',
-        username: 'dave',
-        password: 'dave'
-    },
-    {
-        name: 'Yuju Cortez',
-        username: 'yuju',
-        password: 'yuju'
-    },
-])
-console.log('\nPlaces add\n ⇥ 5 places added!\n\nServer ready. Enter node server / node server.js to start the server\n********************************************************************');
+                placeSeeder.save()
+
+            })
+            
+            console.log('\nPlaces add\n ⇥ 5 places added!\n');
+        }
+    })
+
+    console.log('\nServer ready. Enter node server / node server.js to start the server\n********************************************************************');
+}
+
+seeder()
