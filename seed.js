@@ -1,15 +1,10 @@
 const mongoose = require('mongoose')
-const bcrypt = require('bcrypt')
 const Place = require('./models/place')
 const User = require('./models/user')
 
-mongoose.connect('mongodb://localhost:27017/betaLogin')
-    .then(() => {
-        console.log('Database connected\n');
-    })
-    .catch(err => {
-        console.log(err);
-    })
+mongoose.connect('mongodb://localhost:27017/mlvndb')
+    .then(() => console.log('Database connected\n'))
+    .catch(err => console.log(err))
 
 let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 let today = new Date()
@@ -65,7 +60,7 @@ const seedPost = [
         lng: '120.61975',
         uploaderFirst: 'Melvin',
         uploaderLast: 'Arellano',
-        uploaderId: '634aaacfabbd759f04dc76e3',
+        uploaderId: '634aa9b6593b9b8e4e5a2fc2',
         tag: 'home',
         imageOne: 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/376596398.jpg?k=7aa000c9d1432cbebc7420875d27cb9952323db21fce32d8e78d54f52d06bb1a&o=&hp=1',
         imageTwo: 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/376596411.jpg?k=eb83679be2e5bdb75ccf016637236998f9fa0ce8b80eb8b311e1c8d7d29b0a5a&o=&hp=1',
@@ -229,3 +224,27 @@ seedPost.forEach(seed => {
     placeSeeder.save()
 })
 
+console.log('\n********************************************************************\nArellano — This is seed.js.\n\nAccounts add\n ⇥ Accounts added:')
+console.table([
+    {
+        name: 'Melvin Arellano',
+        username: 'admin',
+        password: 'admin'
+    },
+    {
+        name: 'Kazuha Nakamura',
+        username: 'zuha',
+        password: 'zuha'
+    },
+    {
+        name: 'David Smith',
+        username: 'dave',
+        password: 'dave'
+    },
+    {
+        name: 'Yuju Cortez',
+        username: 'yuju',
+        password: 'yuju'
+    },
+])
+console.log('\nPlaces add\n ⇥ 5 places added!\n\nServer ready. Enter node server / node server.js to start the server\n********************************************************************');

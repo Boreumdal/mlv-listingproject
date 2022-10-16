@@ -15,16 +15,13 @@ const Place = require('./models/place')
 // express declaration
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/betaLogin', {
+// mongoose connection
+mongoose.connect('mongodb://localhost:27017/mlvndb', {
         useNewUrlParser: true,
         useUnifiedTopology: true
     })
-    .then(() => {
-        console.log('Connected');
-    })
-    .catch(err => {
-        console.log(err);
-    })
+    .then(() => console.log('Database Connected.'))
+    .catch(err => console.log(err))
 
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({ extended: true }));
@@ -35,12 +32,12 @@ app.use(session({
     saveUninitialized: false
 }))
 
+// method override
 app.use(methodOverride('_method'))
 
 // passport initializationn
 app.use(passport.initialize())
 app.use(passport.session())
-
 
 passport.serializeUser(function(user, done) {
     done(null, user.id)
@@ -54,12 +51,12 @@ passport.deserializeUser(function(id, done) {
 
 passport.use(new localStrategy(function(username, password, done){
     User.findOne({username: username}, function(err, user){
-        if (err) { return done(err) }
-        if (!user) { return done(null, false, { message: 'User not found'})}
+        if (err) return done(err)
+        if (!user) return done(null, false, { message: 'User not found'})
 
+        // decodes password with bcrypt
         bcrypt.compare(password, user.password, function(err, res){
             if (err) return done(err)
-
             if (res === false) return done(null, false, { message: 'Incorrect password'})
             return done(null, user)
         })
@@ -70,22 +67,31 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 // logged in and logged out middleware
-function inLogged(req, res, next){
-    if (req.isAuthenticated()) { // kung logged in, tuloy
-        return next()
-    }
+function inLogged(req, res, next){ // kung logged in, tuloy
+    if (req.isAuthenticated()) return next()
     res.render('login')
 }
 
-function outLogged(req, res, next){
-    if (!req.isAuthenticated()) { // kung logged out, tuloy
-        return next()
-    }
+function outLogged(req, res, next){ // kung logged out, tuloy
+    if (!req.isAuthenticated()) return next()
     res.render('index')
 }
 
 // for dates
-let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+let monthsInYear = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
+// for options
+const tagOptions = [
+    { tagback: 'home', tagname: 'Home'} ,
+    { tagback: 'government', tagname: 'Government' },
+    { tagback: 'restaurant', tagname: 'Restaurant' },
+    { tagback: 'mall', tagname: 'Mall' },
+    { tagback: 'commercial', tagname: 'Commercial Area' },
+    { tagback: 'tourist', tagname: 'Tourist' },
+    { tagback: 'hotel', tagname: 'Hotel' },
+    { tagback: 'school', tagname: 'School' },
+    { tagback: 'station', tagname: 'Staion' }
+]
 
 // root
 app.get('/', async (req, res) => {
@@ -105,7 +111,7 @@ app.get('/profile', inLogged, (req, res) => {
     res.render('profile', { userdata: req.user, uLogged: true, gender })
 })
 
-// log
+// login
 app.get('/login', outLogged, (req, res) => {
     res.render('login')
 })
@@ -116,41 +122,14 @@ app.post('/login', passport.authenticate('local', {
 }))
 
 // create
-// uses /place future update proofing
 app.get('/create', inLogged, (req, res) => {
-    res.render('create', { user: req.user })
+    res.render('create', { user: req.user, tagOptions })
 })
 
 app.post('/create', inLogged, (req, res) => {
     function date(){
         let today = new Date()
-        return `${months[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`
-    }
-    let defaulter = 'https://img.freepik.com/free-vector/internet-network-warning-404-error-page-file-found-web-page-internet-error-page-issue-found-network-404-error-present-by-man-sleep-display_1150-55450.jpg?w=2000'
-    let oneImg, twoImg, threeImg, fourImg
-    if (req.body.imageOne == ''){
-        oneImg = defaulter
-    }
-    else {
-        oneImg = req.body.imageOne
-    }
-    if (req.body.imageTwo == ''){
-        twoImg = defaulter
-    }
-    else {
-        twoImg = req.body.imageTwo
-    }
-    if (req.body.imageThree == ''){
-        threeImg = defaulter
-    }
-    else {
-        threeImg = req.body.imageThree
-    }
-    if (req.body.imageFour == ''){
-        fourImg = defaulter
-    }
-    else {
-        fourImg = req.body.imageFour
+        return `${monthsInYear[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`
     }
     const createPlace = new Place({
         name: req.body.name,
@@ -161,10 +140,10 @@ app.post('/create', inLogged, (req, res) => {
         uploaderLast: req.body.authorLast,
         uploaderId: req.user._id,
         tag: req.body.tag,
-        imageOne: oneImg,
-        imageTwo: twoImg,
-        imageThree: threeImg,
-        imageFour: fourImg,
+        imageOne: req.body.imageOne,
+        imageTwo: req.body.imageTwo,
+        imageThree: req.body.imageThree,
+        imageFour: req.body.imageFour,
         dateCreated: date(),
         review: []
     })
@@ -185,6 +164,7 @@ app.post('/register', outLogged, async (req, res) => {
         return
     }
 
+    // encrypts password with bcrypt
     bcrypt.genSalt(10, function (err, salt) {
 		if (err) return res.render('error');
 		bcrypt.hash(req.body.password, salt, function (err, hash){
@@ -207,24 +187,24 @@ app.post('/register', outLogged, async (req, res) => {
 	});
 })
 
-
 // logout
 app.get('/logout', (req, res, next) => {
     req.logout(function(err) {
-        if (err) { return next(err); }
+        if (err) return next(err)
         res.redirect('/');
-      });
+    });
 })
 
 // edit
 app.get('/view/place/:id/edit', inLogged, async (req, res) => {
     const { id } = req.params
     const place = await Place.findById(id)
+
     if(req.user._id.valueOf() !== place.uploaderId){
         res.redirect('/')
     }
     else {
-        res.render('edit', { place })
+        res.render('edit', { place, userdata: req.user, tagOptions })
     }
 })
 
@@ -244,6 +224,7 @@ app.patch('/view/place/:id/edit', inLogged, async (req, res) => {
     res.redirect(`/view/place/${id}`)
 })
 
+// delete a post
 app.delete('/view/place/:id/edit', inLogged, async (req, res) => {
     const { id } = req.params
     const place = await Place.findById(id)
@@ -260,9 +241,9 @@ app.delete('/view/place/:id/edit', inLogged, async (req, res) => {
 // place individual
 app.get('/view/place/:id', async (req, res) => {
     const { id } = req.params
+    // needs to be hard coded kase nageerror po yung sa part ng objectId
     const {_id, name, description, lat, lng, uploaderFirst, uploaderLast, uploaderId, tag, imageOne, imageTwo, imageThree, imageFour, review, dateCreated} = await Place.findOne({_id: id})
-    let pureid = _id.valueOf()
-    let placeObj = { _id: pureid, name, description, lat, lng, uploaderFirst, uploaderLast, uploaderId, imageOne, imageTwo, imageThree, imageFour, review, dateCreated }
+    let placeObj = { _id: _id.valueOf(), name, description, lat, lng, uploaderFirst, uploaderLast, uploaderId, imageOne, imageTwo, imageThree, imageFour, review, dateCreated }
 
     let finaltag = `${tag[0].toUpperCase()}${tag.slice(1)}`
 
@@ -279,7 +260,7 @@ app.patch('/view/place/:id', inLogged, async (req, res) => {
     let allplace = await Place.findOne({_id: id})
     function date(){
         let today = new Date()
-        return `${months[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()} ${today.toLocaleString([], {hour: '2-digit', minute:'2-digit'})}`
+        return `${monthsInYear[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()} ${today.toLocaleString([], {hour: '2-digit', minute:'2-digit'})}`
     }
     await Place.findByIdAndUpdate(id, { review: [...allplace.review, {
         id: req.user._id,
@@ -292,9 +273,8 @@ app.patch('/view/place/:id', inLogged, async (req, res) => {
 })
 
 // unknown route receiver
-app.get('*', (req, res) => {
-    res.render('error')
-})
+app.get('*', (req, res) => res.render('error'))
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, console.log(`Listerning to port ${PORT}`))
+app.listen(PORT, console.log(`Server Started. Listerning to port ${PORT}.`))
+

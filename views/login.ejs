@@ -1,11 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/src/styles/default.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <%- include('partials/header-normal.ejs') %>
     <title>Login</title>
 </head>
 <body>
@@ -22,7 +18,6 @@
                 <li><a href="/" class="btn sky">Home</a></li>
             </ul>
         </div>
-        
     </nav>
      
      <main>
@@ -32,11 +27,11 @@
                     <h2>Login your account</h2>
                     <div class="input-control">
                         <label for="">Username:</label>
-                        <input name="username" type="text">
+                        <input name="username" type="text" required>
                     </div>
                     <div class="input-control">
                         <label for="">Password:</label>
-                        <input name="password" type="password">
+                        <input name="password" type="password" required>
                     </div>
                     <div class="input-control">
                         <button type="submit" class="btn">Sign in</button><p class="inline">No account? <a class="regis" href="/register">Register here</a></p>

@@ -1,11 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/src/styles/default.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <%- include('partials/header-normal.ejs') %>
     <title>Home</title>
 </head>
 <body>
@@ -21,11 +17,10 @@
                 <li><a href="/" class="btn sky">Home</a></li>
             </ul>
         </div>
-        
     </nav>
      
-     <main>
-        <section class="login card">
+     <main class="register-main">
+        <section class="login card register-container">
             <div class="login-left register">
                 <form action="/register" method="post">
                     <h2>Register an account</h2>

@@ -1,15 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/src/styles/default.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
-    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
-    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
-    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
+    <%- include('partials/header-script.ejs') %> 
     <title>Create</title>
 </head>
 <body>
@@ -75,15 +67,9 @@
                         <div class="input-control">
                             <label for="tag">Tag:</label>
                             <select name="tag" id="tag">
-                                <option value="home">Home</option>
-                                <option value="goverment">Government</option>
-                                <option value="restaurant">Restaurant</option>
-                                <option value="mall">Mall</option>
-                                <option value="commercial">Commercial Area</option>
-                                <option value="tourist">Tourist Spot</option>
-                                <option value="hotel">Hotel</option>
-                                <option value="school">School</option>
-                                <option value="station">Station</option>
+                                <% tagOptions.forEach(tag => { %> 
+                                    <option value="<%= tag.tagback %>"><%= tag.tagname %></option>
+                                <% }) %> 
                             </select>
                         </div>
                         <div class="input-control">
@@ -107,7 +93,7 @@
                         </div>
                         <div class="input-control notice">
                             <h4>Notes:</h4>
-                            <p>Magrerequest po ito ng location sa browser para lang may maging base center yung map. Pag block po yung pinili magiging default center is Manila</p>
+                            <p>Magrerequest po ito ng location sa browser para lang may maging base center yung map. Pag block po yung pinili madidisable yung map.</p>
                             <p>Click and drag po yung marker sa map</p>
                             <p>Mabagal po yung loading ng map kase HERE Map API po gamit. Need po ng cc sa Google Map API.</p>
                             <p>Please enter valid links on image input. Disabled po yung other 3 inputs para sa image kasi nagbubug po pag di totoong link yung nilagay.</p>

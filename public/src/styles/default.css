@@ -52,25 +52,28 @@ nav div {
     height: 100%;
     display: flex;
     align-items: center;
-    width: 33%;
 }
 nav > div.header-text h1, nav > div.header-text span {
     margin-right: 4px;
 }
 
-nav > div.header-text {
+nav div.header-text {
     font-family: Raleway, sans-serif;
     letter-spacing: .8px;
     display: flex;
     flex-direction: row;
     align-items: center;
+    width: 40%;
 }
 nav div.header-icon {
     justify-content: center;
+    
+    width: 20%;
 }
 nav div.header-nav {
     flex-direction: row;
     justify-content: end;
+    width: 40%;
 }
 nav > div >  ul {
     list-style-type: none;
@@ -445,6 +448,9 @@ form .input-control a.regis:hover {
 }
 div.invi-input {
     display: none;
+}
+.register-container {
+    margin: 0;
 }
 div.register {
     margin: 0 auto;
@@ -883,4 +889,45 @@ div.notice:hover {
 
 div.notice p {
     padding: 5px 0 2px;
+}
+
+@media only screen and (max-width: 1300px) {
+    nav {
+        margin: 0;
+    }
+    main {
+        width: 100%;
+        margin: 50px 0!important;
+        padding: 0 10px;
+    }
+    .register-container {
+        margin: auto;
+    }
+    .div.register {
+        width: 10%!important;
+    }
+    .card.login {
+        width: 99%;
+    }
+    .place-page {
+        width: 100%;
+    }
+    .foot-right {
+        width: 40%;
+    }
+    
+    .foot-left {
+        width: 60%;
+    }
+}
+@media only screen and (max-width: 900px) {
+    nav div.header-text {
+        width: 15%;
+    }
+    nav div.header-icon {
+        width: 20%;
+    }
+    nav div.header-nav {
+        width: 65%;
+    }
 }

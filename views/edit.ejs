@@ -1,15 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/src/styles/default.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
-    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
-    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
-    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
+    <%- include('partials/header-script.ejs') %> 
     <title>Edit</title>
 </head>
 <body>
@@ -18,7 +10,7 @@
             <h1>mlvn.go</h1>
         </div>
         <div class="header-icon">
-            <i class="fa-solid fa-code"></i>
+            <span class="header-loggedin">Welcome! <%= `${userdata.firstname} ${userdata.lastname}` %></strong></span>
         </div>
         <div class="header-nav">
             <ul>
@@ -34,7 +26,6 @@
                 <h1>Edit current location</h1>
             </div>
             <div class="create-field">
-                
                 <form action="/view/place/<%= place._id %>/edit?_method=PATCH" method="post">
                     <div class="create-field-left">
                         <div class="input-control">
@@ -73,16 +64,10 @@
                         </div>
                         <div class="input-control">
                             <label for="tag">Tag:</label>
-                            <select name="tag" id="tag" value="<%= place.gender %>">
-                                <option value="home">Home</option>
-                                <option value="goverment">Government</option>
-                                <option value="restaurant">Restaurant</option>
-                                <option value="mall">Mall</option>
-                                <option value="commercial">Commercial Area</option>
-                                <option value="tourist">Tourist Spot</option>
-                                <option value="hotel">Hotel</option>
-                                <option value="school">School</option>
-                                <option value="station">Station</option>
+                            <select name="tag" id="tag">
+                                <% tagOptions.forEach(tag => { %> 
+                                    <option value="<%= tag.tagback %>" <%= tag.tagback === place.tag ? 'selected' : ''%>><%= tag.tagname %></option>
+                                <% }) %> 
                             </select>
                         </div>
                         <div class="input-control">

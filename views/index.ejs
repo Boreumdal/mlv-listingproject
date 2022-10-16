@@ -1,11 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/src/styles/default.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <%- include('partials/header-normal.ejs') %> 
     <title>Home</title>
 </head>
 <body>
@@ -20,7 +16,6 @@
                 <% } %>
             </div>
             <div class="header-icon">
-                
                 <% if (uLogged){ %>
                     <span class="header-loggedin">Welcome! <%= `${userdata.firstname} ${userdata.lastname}` %></strong></span>
                 <% } else { %>
@@ -30,9 +25,6 @@
             <div class="header-nav">
                 <ul>
                     <li><a href="/">Home</a></li>
-                    
-                    <li><a href="#">!Contact</a></li>
-                    
                     <% if (uLogged){ %>
                         <li><a href="/profile">Profile</a></li>
                         <li><a class="btn" href="/create">Create Post</a></li>
@@ -52,7 +44,6 @@
                 <% } %>
             </div>
             <div class="header-card-container">
-                
                 <div class="card card-header">
                         <img src="/src/img/lotus.png" alt="peace" srcset="">
                         <h2>Peace</h2>
@@ -84,7 +75,7 @@
                             <div class="loc-item-img" style="background-image: url('<%= place.imageOne %>');"></div>
                             <div class="loc-item-detail">
                                 <div class="loc-item-title">
-                                    <p>Rizal, Philippines</p>
+                                    <p><%= place.name %></p>
                                 </div>
                                 <div class="loc-item-row loc-item-row-uploader">
                                     <p><strong>Uploader:</strong> <span><%=  `${place.uploaderFirst} ${place.uploaderLast}` %></span></p>
@@ -93,7 +84,7 @@
                                     <p><strong>Description:</strong>  <span><%= place.description %></span></p>
                                 </div>
                                 <div class="loc-item-row loc-item-row-address">
-                                    <p><strong>Address:</strong> <span>Address</span></p>
+                                    <p><strong>Address:</strong> <span>!Not supported yet</span></p>
                                 </div>
                             </div>
                         </div>
