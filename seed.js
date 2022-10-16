@@ -3,7 +3,7 @@ const Place = require('./models/place')
 const User = require('./models/user')
 
 mongoose.connect('mongodb://localhost:27017/mlvndb')
-    .then(() => console.log('Database connected'))
+    .then(() => console.log('Database connected\n******************************************************************************************'))
     .catch(err => console.log(err))
 
 let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
@@ -210,66 +210,63 @@ const seedPost = [
     }
 ]
 
-function seeder(){
-    console.log('\n********************************************************************\nArellano — This is seed.js.')
+console.log('\n******************************************************************************************\nArellano — This is seed.js.')
 
-    // seed for accounts
-    User.findOne({username: seedAccount[0].username}, function(err, pass){
-        if (err) return
-        if (pass){
-            console.log('\nAccounts existed');
-        }
-        if (!pass){
-            seedAccount.forEach(acc => {
-                let accSeeder = new User(acc)
+// seed for accounts
+User.findOne({username: seedAccount[0].username}, function(err, pass){
+    if (err) return
+    if (pass){
+        console.log('\nAccounts existed');
+    }
+    if (!pass){
+        seedAccount.forEach(acc => {
+            let accSeeder = new User(acc)
 
-                accSeeder.save()
-            })
-            console.log('\nAccounts add\n ⇥ Accounts added:');
-            console.table([
-                {
-                    name: 'Melvin Arellano',
-                    username: 'admin',
-                    password: 'admin'
-                },
-                {
-                    name: 'Kazuha Nakamura',
-                    username: 'zuha',
-                    password: 'zuha'
-                },
-                {
-                    name: 'David Smith',
-                    username: 'dave',
-                    password: 'dave'
-                },
-                {
-                    name: 'Yuju Cortez',
-                    username: 'yuju',
-                    password: 'yuju'
-                },
-            ])
-        }
-    })
+            accSeeder.save()
+        })
+        console.log('\nAccounts add\n ⇥ Accounts added:');
+        console.table([
+            {
+                name: 'Melvin Arellano',
+                username: 'admin',
+                password: 'admin'
+            },
+            {
+                name: 'Kazuha Nakamura',
+                username: 'zuha',
+                password: 'zuha'
+            },
+            {
+                name: 'David Smith',
+                username: 'dave',
+                password: 'dave'
+            },
+            {
+                name: 'Yuju Cortez',
+                username: 'yuju',
+                password: 'yuju'
+            },
+        ])
+        console.log('\n******************************************************************************************');
+    }
+})
 
-    // seed for places
-    Place.findOne({name: seedPost[0].name}, function(err, pass){
-        if (err) return
-        if (pass){
-            console.log('\nPost existed');
-        }
-        if (!pass){
-            seedPost.forEach(seed => {
-                let placeSeeder = new Place(seed)
+// seed for places
+Place.findOne({name: seedPost[0].name}, function(err, pass){
+    if (err) return
+    if (pass){
+        console.log('\nPost existed.');
+    }
+    if (!pass){
+        seedPost.forEach(seed => {
+            let placeSeeder = new Place(seed)
 
-                placeSeeder.save()
+            placeSeeder.save()
 
-            })
-            
-            console.log('\nPlaces add\n ⇥ 5 places added!\n');
-        }
-    })
+        })
+        
+        console.log('\nPlaces add\n ⇥ 5 places added!\n\n******************************************************************************************');
+    }
+})
 
-    console.log('\nServer ready. Enter node server / node server.js to start the server\n********************************************************************');
-}
-
-seeder()
+console.log('\nServer ready, CTRL + C to exit then enter node server / node server.js to start the server\n******************************************************************************************');
